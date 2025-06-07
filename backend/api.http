@@ -3,8 +3,8 @@ Content-Type: application/json
 
 
 {
-  "username": "anshul",
-  "email": "anshul@gmail.com",
+  "username": "ansul",
+  "email": "ansul@gmail.com",
   "password": "bht",
   "name": "pahul"
 }
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 
 {
-  "email": "anshul@gmail.com",
+  "email": "ansul@gmail.com",
   "password": "bht"
 }
 
@@ -25,7 +25,7 @@ Content-Type: application/json
 
 
 {
-  "email": "anshul@gmail.com",
+  "email": "ansul@gmail.com",
   "password": "bht"
 }
 
@@ -35,7 +35,7 @@ POST http://localhost:9090/get_user_and_profile HTTP/1.1
 Content-Type: application/json
 
 {
-  "token" :  "5922367d44c1fd9aa55a9c5a18b7a403b124ac4a07825baa8e39c179b919d4fe"
+  "token" :  "e32510c791f2dd75232ab6707322a1179196ceefa45d7da7bd1b3fc0c7f39035"
 }
 
 ###
@@ -43,7 +43,7 @@ POST http://localhost:9090/update_profile_data HTTP/1.1
 Content-Type: application/json
 
 {
-  "token":  "5922367d44c1fd9aa55a9c5a18b7a403b124ac4a07825baa8e39c179b919d4fe",
+  "token":  "e32510c791f2dd75232ab6707322a1179196ceefa45d7da7bd1b3fc0c7f39035",
   "bio"
   "currentPost"
   "pastwork": [
@@ -68,5 +68,5 @@ Content-Type: application/json
 
 {
   "token":
-   "5922367d44c1fd9aa55a9c5a18b7a403b124ac4a07825baa8e39c179b919d4fe"
+   "e32510c791f2dd75232ab6707322a1179196ceefa45d7da7bd1b3fc0c7f39035"
 }

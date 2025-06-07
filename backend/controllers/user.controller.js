@@ -17,7 +17,7 @@ export const convertUserDataTOPDF = async (userData) => {
     console.log("userData.userId:", userData.userId);
     console.log("userData.userId.profile:", userData?.userId?.profile);
 
-    if (userData.userId && userData.userId.profilee) {
+    if (userData.userId && userData.userId.profile) {
         try {
             doc.image(`uploads/${userData.userId.profile}`, { align: "center", width: 100 });
         } catch (err) {
@@ -182,7 +182,7 @@ export const getUserAndProfile = async (req, res) => {
     try {
         const { token } = req.body;
 
-        const user = await User.findOne({ token: token }).populate('profile');
+        const user = await User.findOne({ token: token });
         
         if (!user) {
             return res.status(404).json({
@@ -190,7 +190,7 @@ export const getUserAndProfile = async (req, res) => {
             });
         }
         const userProfile = await Profile.findOne({ userId: user._id })
-        .populate('userId', 'name email username profilePicture');
+            .populate('userId', 'name email username profile');
      
         return res.json(userProfile);
     
@@ -231,7 +231,7 @@ export const updateProfileData = async (req, res) => {
 
 export const getAllUserProfile = async (req, res) => {
     try {
-        const profiles = await Profile.find().populate('userId', 'name email username profilePicture');
+        const profiles = await Profile.find().populate('userId', 'name email username profile');
         
         return res.json({profiles});
     
@@ -245,29 +245,29 @@ export const getAllUserProfile = async (req, res) => {
 
 export const downloadProfile = async (req, res) => {
     try {
-      const user_id = req.query.id;
-      if (!user_id) {
-        return res.status(400).json({ error: "User ID is required" });
-      }
-  
-      const userProfile = await Profile.findOne({ userId: user_id })
-        .populate("userId", "name email username profilePicture");
-  
-      if (!userProfile) {
-        return res.status(404).json({ error: "User profile not found" });
-      }
-  
-      const outputPath = await convertUserDataTOPDF(userProfile);
-  
-      // Optional: Validate if file exists before sending
-      return res.download(outputPath, (err) => {
-        if (err) {
-          console.error("Error sending file:", err);
-          return res.status(500).json({ error: "Error sending PDF file" });
+        const user_id = req.query.id;
+
+        if (!user_id || !mongoose.Types.ObjectId.isValid(user_id)) {
+            return res.status(400).json({ error: "Invalid or missing User ID" });
         }
-      });
+
+        const userProfile = await Profile.findOne({ userId: user_id })
+            .populate("userId", "name email username profile");
+
+        if (!userProfile) {
+            return res.status(404).json({ error: "User profile not found" });
+        }
+
+        const outputPath = await convertUserDataTOPDF(userProfile);
+
+        return res.download("uploads/" + outputPath, (err) => {
+            if (err) {
+                console.error("Error sending file:", err);
+                return res.status(500).json({ error: "Error sending PDF file" });
+            }
+        });
     } catch (err) {
-      console.error("Download error:", err);
-      return res.status(500).json({ error: "Server error while downloading profile" });
+        console.error("Download error:", err);
+        return res.status(500).json({ error: "Server error while downloading profile" });
     }
-  };
+};
